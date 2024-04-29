@@ -1,16 +1,42 @@
-import {Link} from 'react-router-dom';
-import Users from '../users/users';
+import React, {useEffect, useState} from 'react';
+import ErrorBoundary from '../errorBoundary/ErrorBoundary';
+import UsersList from '../users/userList';
+import ActivityList from '../activityList/ActivityList';
+import useTodoServices from '../../services/TodoServices';
 
 
 const MainPage = () => {
+
+	const [users, setUsers] = useState([]);
+	const [selectedUserId, setSelectedUserId] = useState(100009);
+	const {getUsers} = useTodoServices();
+	useEffect(() => {
+		getUsers()
+			.then(data => {
+				setUsers(data);
+				setSelectedUserId(data[0]?.id);
+			});
+	}, []);
+
+	const handleUserSelected = (userId) => {
+		setSelectedUserId(userId);
+	};
+
 	return (
-		<div>
-			<h1>Main Page</h1>
-			<ul>
-				<li><Link to="/users">Users</Link></li>
-			</ul>
-		</div>
+		<>
+			<ErrorBoundary>
+				<UsersList
+					users={users}
+					selectedUserId={selectedUserId}
+					onUserSelected={handleUserSelected}/>
+			</ErrorBoundary>
+			<ErrorBoundary>
+				<ActivityList
+					users={users}
+					selectedUserId={selectedUserId}/>
+			</ErrorBoundary>
+		</>
 	);
-}
+};
 
 export default MainPage;
