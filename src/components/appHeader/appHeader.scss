@@ -2,35 +2,36 @@
 
 .app {
   &__header {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
+	background: $green-color;
   }
 
   &__title {
-    font-weight: bold;
-    font-size: 28px;
-    line-height: 37px;
+	font-weight: bold;
+	font-size: 28px;
+	line-height: 37px;
 
-    span {
-      color: $main-color;
-    }
+	span {
+	  color: $main-color;
+	}
   }
 
   &__menu {
-    ul {
-      display: flex;
-      justify-content: space-between;
-      font-weight: bold;
-      font-size: 24px;
-      line-height: 32px;
+	ul {
+	  display: flex;
+	  justify-content: space-between;
+	  font-weight: bold;
+	  font-size: 24px;
+	  line-height: 32px;
 
-      li {
-        margin: 0 8px;
+	  li {
+		margin: 0 8px;
 
-        a:hover {
-          color: $main-color;
-        }
-      }
-    }
+		a:hover {
+		  color: $main-color;
+		}
+	  }
+	}
   }
 }

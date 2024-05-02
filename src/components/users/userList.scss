@@ -1,0 +1,37 @@
+@import "../../style/variables.scss";
+
+.users {
+  position: relative;
+
+  &__list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: end;
+	margin-top: 20px;
+	font-size: 26px;
+	align-items: center;
+	color: #f6f1d3;
+
+	&-select {
+	  margin-left: 20px;
+	  font-size: 26px;
+	  padding: 5px;
+	  border-radius: 5px;
+	  border: 2px solid #000;
+	  background-color: $green-color;
+	  color: $main-color;
+	}
+  }
+
+  &__add-activity {
+	position: absolute;
+	right: 0;
+	margin-top: 5px;
+	padding: 5px 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 22px;
+	background-color: $green-color;
+  }
+}

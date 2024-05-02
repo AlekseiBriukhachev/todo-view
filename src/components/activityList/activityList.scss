@@ -1,0 +1,63 @@
+@import "../../style/variables.scss";
+
+.activity {
+	&__table {
+		width: 100%;
+		border-collapse: collapse;
+		margin-top: 20px;
+		border: 2px solid $main-color;
+		border-radius: 100px;
+		font-size: 22px;
+
+		&--actions {
+			display: flex;
+			justify-content: space-evenly;
+		}
+
+		&--actions button {
+			padding: 5px 10px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 22px;
+		}
+
+		&--actions button.edit {
+			background-color: $green-color;
+			color: black;
+		}
+
+		&--actions button.delete {
+			background-color: red;
+			color: white;
+		}
+
+		th {
+			background-color: $main-color;
+			color: white;
+			font-weight: bold;
+			padding: 10px;
+			text-align: left;
+		}
+
+		th:last-child {
+			text-align: center;
+		}
+
+		td {
+			padding: 10px;
+			border-bottom: 2px solid $main-color;
+			&:hover {
+				cursor: pointer;
+			}
+		}
+
+		tr:last-child td {
+			border-bottom: none;
+		}
+
+		tr.disabled td:nth-child(-n + 4) {
+			text-decoration: line-through;
+		}
+	}
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import './userList.scss';
 
 const UsersList = (props) => {
 	const {users, selectedUserId, onUserSelected} = props;
@@ -8,9 +9,9 @@ const UsersList = (props) => {
 	};
 
 	return (
-		<div className="">
-			<div className="user__list">User:
-				<select onChange={handleUserChange} value={selectedUserId}>
+		<div className="users">
+			<div className="users__list">User:
+				<select className="users__list-select" onChange={handleUserChange} value={selectedUserId}>
 					{users.map(user => (
 						<option value={user.id} key={user.id}>
 							{user.name}
@@ -18,7 +19,9 @@ const UsersList = (props) => {
 					))}
 				</select>
 			</div>
+			<button className="users__add-activity">Add activity</button>
 		</div>
+
 	);
 };
 export default UsersList;

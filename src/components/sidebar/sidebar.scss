@@ -1,0 +1,21 @@
+.sidebar {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	z-index: 1;
+	&__wrapper {
+		background-color: #333;
+		color: #fff;
+	}
+
+	&__link-color {
+		color: inherit
+	}
+	&__footer {
+		padding: 20px 5px
+	}
+	&__user {
+		margin-left: 10px;
+		font-size: 23px;
+	}
+}
