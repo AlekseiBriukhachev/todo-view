@@ -7,6 +7,21 @@ const useTodoServices = () => {
 		return response.map(_transformUsers);
 	};
 
+	const updateActivity = async (activity) => {
+		const response = await request(
+			`http://localhost:8080/api/activity/${activity.id}/update`,
+			'POST',
+			JSON.stringify(activity));
+		return _transformActivity(response);
+	};
+
+	const completeActivity = async (activityId) => {
+		const response = await request(
+			`http://localhost:8080/api/activity/${activityId}/complete`,
+			'POST');
+		return _transformActivity(response);
+	};
+
 
 	const _transformUsers = (users) => {
 
@@ -15,11 +30,22 @@ const useTodoServices = () => {
 			name: users.name,
 			email: users.email,
 			activities: users.activities.map(activity => ({
+				id: activity.id,
 				title: activity.title,
 				description: activity.description,
 				startDate: activity.startDate,
 				endDate: activity.endDate,
 			})),
+		};
+	};
+
+	const _transformActivity = (activity) => {
+		return {
+			id: activity.id,
+			title: activity.title,
+			description: activity.description,
+			startDate: activity.startDate,
+			endDate: activity.endDate,
 		};
 	};
 
@@ -29,7 +55,9 @@ const useTodoServices = () => {
 		clearError,
 		process,
 		setProcess,
-		getUsers
+		getUsers,
+		updateActivity,
+		completeActivity
 	};
 };
 

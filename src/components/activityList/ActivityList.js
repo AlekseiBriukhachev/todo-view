@@ -1,13 +1,24 @@
 import './activityList.scss';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 const ActivityList = (props) => {
 
-	const {users, selectedUserId, onRowClick} = props;
+	const {users, selectedUserId, onRowClick, selectedActivity, setSelectedActivity} = props;
+	const [endDate, setEndDate] = useState(selectedActivity ? selectedActivity.endDate : '');
 
 	const handleRowClick = (activity) => {
 		onRowClick(activity);
 	};
+
+	useEffect(() => {
+		if (selectedActivity) {
+			// setEndDate(prevState => ({
+			// 	...prevState,
+			// 	[selectedActivity.id]: selectedActivity.endDate
+			// }));
+			setSelectedActivity(selectedActivity);
+		}
+	}, [selectedActivity]);
 
 	return (<div className="activity">
 		<h2>Activity:</h2>
@@ -18,7 +29,6 @@ const ActivityList = (props) => {
 				<th>Description</th>
 				<th>Start Date</th>
 				<th>End Date</th>
-				{/*<th>Actions</th>*/}
 			</tr>
 			</thead>
 			<tbody>
@@ -30,11 +40,7 @@ const ActivityList = (props) => {
 					<td>{activity.title}</td>
 					<td>{activity.description}</td>
 					<td>{activity.startDate}</td>
-					<td>{activity.endDate}</td>
-					{/*<td className="activity__table--actions">*/}
-					{/*	<button className="edit" onClick={/!*() => props.onEditActivity(activity)*!/}>Edit</button>*/}
-					{/*	<button className="delete" onClick={/!*() => props.onDeleteActivity(activity)*!/}>Delete</button>*/}
-					{/*</td>*/}
+					<td>{endDate[index] || activity.endDate}</td>
 				</tr>)))}
 			</tbody>
 		</table>

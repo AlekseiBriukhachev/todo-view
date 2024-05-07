@@ -41,10 +41,14 @@ function App() {
 						<MainPage
 							users={users}
 							selectedUserId={selectedUserId}
-							onRowClick={handleRowClick}/>
+							onRowClick={handleRowClick}
+							selectedActivity={selectedActivity}
+							setSelectedActivity={setSelectedActivity}/>
 					</div>
 				</main>
-				<ActivitySidebar selectedActivity={selectedActivity}/>
+				<ActivitySidebar
+					selectedActivity={selectedActivity}
+					setSelectedActivity={setSelectedActivity}/>
 			</div>
 		</Router>
 	);

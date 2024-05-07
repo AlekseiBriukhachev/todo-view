@@ -1,0 +1,37 @@
+@import "../../style/variables";
+
+.activity__sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 250px;
+  cursor: none;
+  z-index: 1;
+
+  &-actions {
+    display: flex;
+    justify-content: space-evenly;
+
+    button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 22px;
+    }
+  }
+
+  &-actions .edit {
+    background-color: $green-color;
+    color: black;
+  }
+
+  &-actions .complete {
+    background-color: red;
+    color: white;
+  }
+}
+
+.hide {
+  width: 20px;
+}
