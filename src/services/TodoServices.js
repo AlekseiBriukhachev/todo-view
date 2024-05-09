@@ -22,6 +22,20 @@ const useTodoServices = () => {
 		return _transformActivity(response);
 	};
 
+	const saveActivity = async (userId, activity) => {
+		const response = await request(
+			`http://localhost:8080/api/activity/${userId}/create`,
+			'POST',
+			JSON.stringify(activity));
+		return _transformActivity(response);
+	};
+
+	const getUserById = async (userId) => {
+		const response = await request(`http://localhost:8080/api/users/${userId}`);
+		return _transformUser(response);
+
+	}
+
 
 	const _transformUsers = (users) => {
 
@@ -35,6 +49,7 @@ const useTodoServices = () => {
 				description: activity.description,
 				startDate: activity.startDate,
 				endDate: activity.endDate,
+				isCompleted: activity.isCompleted
 			})),
 		};
 	};
@@ -46,6 +61,23 @@ const useTodoServices = () => {
 			description: activity.description,
 			startDate: activity.startDate,
 			endDate: activity.endDate,
+			isCompleted: activity.isCompleted
+		};
+	};
+
+	const _transformUser = (user) => {
+		return {
+			id: user.id,
+			name: user.name,
+			email: user.email,
+			activities: user.activities.map(activity => ({
+				id: activity.id,
+				title: activity.title,
+				description: activity.description,
+				startDate: activity.startDate,
+				endDate: activity.endDate,
+				isCompleted: activity.isCompleted
+			})),
 		};
 	};
 
@@ -57,7 +89,9 @@ const useTodoServices = () => {
 		setProcess,
 		getUsers,
 		updateActivity,
-		completeActivity
+		completeActivity,
+		saveActivity,
+		getUserById
 	};
 };
 

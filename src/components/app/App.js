@@ -12,6 +12,7 @@ function App() {
 	const [selectedUserId, setSelectedUserId] = useState(100009);
 	const [selectedActivity, setSelectedActivity] = useState(null);
 	const {getUsers} = useTodoServices();
+
 	useEffect(() => {
 		getUsers()
 			.then(data => {
@@ -39,7 +40,6 @@ function App() {
 					<AppHeader/>
 					<div className="content">
 						<MainPage
-							users={users}
 							selectedUserId={selectedUserId}
 							onRowClick={handleRowClick}
 							selectedActivity={selectedActivity}

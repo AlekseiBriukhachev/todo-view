@@ -13,7 +13,7 @@ import TodoServices from '../../services/TodoServices';
 
 const ActivitySidebar = (props) => {
 	const { selectedActivity, setSelectedActivity } = props;
-	const {updateActivity, completeActivity} = TodoServices();
+	const {updateActivity} = TodoServices();
 	const [description, setDescription] = useState(selectedActivity ? selectedActivity.description : '');
 	const [endDate, setEndDate] = useState(selectedActivity ? selectedActivity.endDate : '');
 
@@ -25,15 +25,6 @@ const ActivitySidebar = (props) => {
 			})
 			.catch(error => console.error('There was an error!', error));
 	};
-
-	const onCompleteActivity = (activityId) => {
-		completeActivity(activityId)
-			.then(updatedActivity => {
-				setSelectedActivity(updatedActivity);
-				setEndDate(updatedActivity.endDate);
-			})
-			.catch(error => console.error('There was an error!', error));
-	}
 
 	const onDescriptionChange = (value) => {
 		setDescription(value);
@@ -54,21 +45,20 @@ const ActivitySidebar = (props) => {
 			<CDBSidebarHeader prefix={selectedActivity.title}/>
 			<CDBSidebarContent>
 				<CDBSidebarMenu>
-					<CDBSidebarMenuItem icon="plus">
+					<CDBSidebarMenuItem icon="book">
 						<input
-							style={{background: 'rgb(17, 24, 39)', border: 'none', color: 'white'}}
+							className="activity__description-input"
 							type="text"
-							value={description}
+							value={description ? description : ''}
 							onChange={(e) => onDescriptionChange(e.target.value)}/>
 					</CDBSidebarMenuItem>
-					<CDBSidebarMenuItem icon="columns">{selectedActivity.startDate}</CDBSidebarMenuItem>
-					<CDBSidebarMenuItem icon="table">{endDate}</CDBSidebarMenuItem>
+					<CDBSidebarMenuItem icon="calendar">{selectedActivity.startDate}</CDBSidebarMenuItem>
+					<CDBSidebarMenuItem icon="calendar">{endDate}</CDBSidebarMenuItem>
 				</CDBSidebarMenu>
 			</CDBSidebarContent>
 			<CDBSidebarFooter style={{textAlign: 'center'}}>
 				<div className="sidebar-btn-wrapper sidebar__footer activity__sidebar-actions">
 					<button className="edit" onClick={() => onEditActivity(selectedActivity)}>Edit</button>
-					<button className="complete" onClick={() => onCompleteActivity(selectedActivity.id)}>Complete</button>
 				</div>
 			</CDBSidebarFooter>
 		</CDBSidebar>

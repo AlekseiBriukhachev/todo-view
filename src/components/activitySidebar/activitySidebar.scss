@@ -1,37 +1,52 @@
 @import "../../style/variables";
 
-.activity__sidebar {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 250px;
-  cursor: none;
-  z-index: 1;
+.activity {
 
-  &-actions {
-    display: flex;
-    justify-content: space-evenly;
+	&__description-input {
+		background: rgb(17, 24, 39);
+		border: none;
+		color: white;
+		margin-right: 5px;
+		&:focus {
+			color: rgb(17, 24, 39);
+			background: white;
+			padding-left: 5px;
+		}
+	}
 
-    button {
-      padding: 5px 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 22px;
-    }
-  }
+	&__sidebar {
+		display: flex;
+		flex-direction: column;
+		height: 100vh;
+		width: 250px;
+		cursor: none;
+		z-index: 1;
 
-  &-actions .edit {
-    background-color: $green-color;
-    color: black;
-  }
+		&-actions {
+			display: flex;
+			justify-content: space-evenly;
 
-  &-actions .complete {
-    background-color: red;
-    color: white;
-  }
+			button {
+				padding: 5px 10px;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				font-size: 22px;
+			}
+		}
+
+		&-actions .edit {
+			background-color: $green-color;
+			color: black;
+		}
+
+		&-actions .complete {
+			background-color: red;
+			color: white;
+		}
+	}
 }
 
 .hide {
-  width: 20px;
+	width: 20px;
 }

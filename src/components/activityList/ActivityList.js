@@ -1,50 +1,89 @@
 import './activityList.scss';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import TodoServices from '../../services/TodoServices';
 
 const ActivityList = (props) => {
 
-	const {users, selectedUserId, onRowClick, selectedActivity, setSelectedActivity} = props;
+	const {activities, onRowClick, selectedActivity, setSelectedActivity} = props;
 	const [endDate, setEndDate] = useState(selectedActivity ? selectedActivity.endDate : '');
+	const [checked, setChecked] = useState(false);
+
+	const {completeActivity} = TodoServices();
 
 	const handleRowClick = (activity) => {
 		onRowClick(activity);
 	};
 
+	const onCompleteActivity = (activityId) => {
+		completeActivity(activityId)
+			.then(updatedActivity => {
+				setSelectedActivity(updatedActivity);
+				setEndDate(updatedActivity.endDate);
+				setChecked(updatedActivity.isCompleted);
+			})
+			.catch(error => console.error('There was an error!', error));
+	};
+
+
 	useEffect(() => {
 		if (selectedActivity) {
-			// setEndDate(prevState => ({
-			// 	...prevState,
-			// 	[selectedActivity.id]: selectedActivity.endDate
-			// }));
 			setSelectedActivity(selectedActivity);
+			setEndDate(selectedActivity.endDate);
+			setChecked(selectedActivity.isCompleted);
 		}
 	}, [selectedActivity]);
 
-	return (<div className="activity">
-		<h2>Activity:</h2>
-		<table className="activity__table">
-			<thead>
-			<tr>
-				<th>Title</th>
-				<th>Description</th>
-				<th>Start Date</th>
-				<th>End Date</th>
-			</tr>
-			</thead>
-			<tbody>
-			{users.filter(user => user.id === selectedUserId).flatMap(user => user.activities.map((activity, index) => (
+	useEffect(() => {
+		renderItem(activities);
+	}, [activities]);
+
+	const renderItem = (activity) => {
+		const items = activity.map(item => {
+			return (
 				<tr className={
-					activity.endDate != null ? "disabled" : "active"}
-					key={index}
-					onClick={() => handleRowClick(activity)}>
-					<td>{activity.title}</td>
-					<td>{activity.description}</td>
-					<td>{activity.startDate}</td>
-					<td>{endDate[index] || activity.endDate}</td>
-				</tr>)))}
-			</tbody>
-		</table>
-	</div>);
+					item.isCompleted ? 'disabled' : 'active'}
+					key={item.id}
+					onClick={() => handleRowClick(item)}>
+					<td>
+						<input
+							type="checkbox"
+							checked={item.isCompleted}
+							onChange={() => onCompleteActivity(item.id)}/>
+					</td>
+					<td>{item.title}</td>
+					<td>{item.description}</td>
+					<td>{item.startDate}</td>
+					<td>{item.endDate}</td>
+				</tr>
+			);
+		});
+		return (
+			<table className="activity__table">
+				<thead>
+				<tr>
+					<th>Done</th>
+					<th>Title</th>
+					<th>Description</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+				</tr>
+				</thead>
+				<tbody>
+				{items}
+				</tbody>
+			</table>
+		);
+	};
+
+	return (
+		<div className="activity">
+			<h2>Activity:</h2>
+			<div>
+				{renderItem(activities)}
+			</div>
+
+		</div>
+	);
 };
 
 export default ActivityList;
