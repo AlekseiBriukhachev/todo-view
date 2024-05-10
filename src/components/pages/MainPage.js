@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 import ActivityList from '../activityList/ActivityList';
+import Dashboard from '../dashboard/Dashboard';
 
 
 const MainPage = (props) => {
 	const { selectedUserId, onUserSelected } = props;
+	const [hours, setHours] = useState(0);
 
 
 	const handleRowClick = (activity) => {
@@ -17,8 +19,10 @@ const MainPage = (props) => {
 				<ActivityList
 					userId={selectedUserId}
 					onRowClick={handleRowClick}
-					onUserSelected={onUserSelected}/>
+					onUserSelected={onUserSelected}
+					onHoursCalc={setHours}/>
 			</ErrorBoundary>
+			<Dashboard hoursUsed={hours}/>
 		</>
 	);
 };

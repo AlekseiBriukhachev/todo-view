@@ -2,7 +2,7 @@ import './activityList.scss';
 import React, {useEffect, useState} from 'react';
 import TodoServices from '../../services/TodoServices';
 
-const ActivityList = ({userId, onRowClick, setSelectedActivity}) => {
+const ActivityList = ({userId, onRowClick, setSelectedActivity, onHoursCalc}) => {
 	const [user, setUser] = useState();
 	const [activities, onUserSelected] = useState(user?.activities);
 	const {completeActivity, getUserById} = TodoServices();
@@ -12,6 +12,7 @@ const ActivityList = ({userId, onRowClick, setSelectedActivity}) => {
 			.then(data => {
 				setUser(data);
 				onUserSelected(data?.activities);
+				onHoursCalc(calculateHours(data?.activities));
 			})
 			.catch(error => console.error('[Main page] There was an error!', error));
 	}, [userId]);
@@ -24,6 +25,24 @@ const ActivityList = ({userId, onRowClick, setSelectedActivity}) => {
 			})
 			.catch(error => console.error('[ActivityList] There was an error!', error));
 	};
+
+	const calculateHours = (activities) => {
+		console.log('start calculateHours', activities)
+		return activities.reduce((acc, activity) => {
+			if (activity.isCompleted) {
+				const startDate = new Date(activity.startDate).getTime();
+				console.log('startDate', startDate);
+				const endDate = new Date(activity.endDate).getTime();
+				console.log('endDate', endDate);
+				const hours = Math.abs(endDate - startDate) / 36e5;
+				console.log('hours', hours);
+				return acc + hours;
+			}
+			console.log('acc', acc);
+			return acc;
+		}, 0);
+
+	}
 
 	const renderItem = (activity) => {
 		return (
