@@ -1,5 +1,5 @@
 import './activitySidebar.scss';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
 	CDBSidebar,
@@ -12,7 +12,7 @@ import {
 import TodoServices from '../../services/TodoServices';
 
 const ActivitySidebar = (props) => {
-	const { selectedActivity, setSelectedActivity } = props;
+	const { selectedActivity, onUserSelected } = props;
 	const {updateActivity} = TodoServices();
 	const [description, setDescription] = useState(selectedActivity ? selectedActivity.description : '');
 	const [endDate, setEndDate] = useState(selectedActivity ? selectedActivity.endDate : '');
@@ -20,7 +20,7 @@ const ActivitySidebar = (props) => {
 	const onEditActivity = (activity) => {
 		updateActivity(activity)
 			.then(updatedActivity => {
-				setSelectedActivity(updatedActivity);
+				onUserSelected(updatedActivity);
 				setDescription(updatedActivity.description);
 			})
 			.catch(error => console.error('There was an error!', error));

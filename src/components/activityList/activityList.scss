@@ -40,16 +40,17 @@
 			text-align: left;
 		}
 
-		th:last-child {
-			text-align: center;
-		}
-
 		td {
 			padding: 10px;
 			border-bottom: 2px solid $main-color;
 			&:hover {
 				cursor: pointer;
 			}
+		}
+
+		td input {
+			width: 2vw;
+			height: 4vh;
 		}
 
 		tr:last-child td {
