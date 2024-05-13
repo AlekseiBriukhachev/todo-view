@@ -16,7 +16,7 @@ const MainPage = (props) => {
 			.then(setSelectedActivity(null))
 			.catch(error => console.error('There was an error!', error));
 		console.log('user', selectedUserId, user);
-	}, [selectedUserId, onRowClick]);
+	}, [selectedUserId]);
 
 
 	return (
