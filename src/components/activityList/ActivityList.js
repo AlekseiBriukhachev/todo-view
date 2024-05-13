@@ -2,61 +2,49 @@ import './activityList.scss';
 import React, {useEffect, useState} from 'react';
 import TodoServices from '../../services/TodoServices';
 
-const ActivityList = (props) => {
+const ActivityList = ({userId, onRowClick, setSelectedActivity, onHoursCalc}) => {
+	const [user, setUser] = useState();
+	const [activities, onUserSelected] = useState(user?.activities);
+	const {completeActivity, getUserById} = TodoServices();
 
-	const {activities, onRowClick, selectedActivity, setSelectedActivity} = props;
-	const [endDate, setEndDate] = useState(selectedActivity ? selectedActivity.endDate : '');
-	const [checked, setChecked] = useState(false);
-
-	const {completeActivity} = TodoServices();
-
-	const handleRowClick = (activity) => {
-		onRowClick(activity);
-	};
+	useEffect(() => {
+		getUserById(userId)
+			.then(data => {
+				setUser(data);
+				onUserSelected(data?.activities);
+				onHoursCalc(calculateHours(data?.activities));
+			})
+			.catch(error => console.error('[Main page] There was an error!', error));
+	}, [userId]);
 
 	const onCompleteActivity = (activityId) => {
 		completeActivity(activityId)
 			.then(updatedActivity => {
 				setSelectedActivity(updatedActivity);
-				setEndDate(updatedActivity.endDate);
-				setChecked(updatedActivity.isCompleted);
+				onUserSelected(activities.map(activity => activity.id === updatedActivity.id ? updatedActivity : activity));
 			})
-			.catch(error => console.error('There was an error!', error));
+			.catch(error => console.error('[ActivityList] There was an error!', error));
 	};
 
+	const calculateHours = (activities) => {
+		console.log('start calculateHours', activities)
+		return activities.reduce((acc, activity) => {
+			if (activity.isCompleted) {
+				const startDate = new Date(activity.startDate).getTime();
+				console.log('startDate', startDate);
+				const endDate = new Date(activity.endDate).getTime();
+				console.log('endDate', endDate);
+				const hours = Math.abs(endDate - startDate) / 36e5;
+				console.log('hours', hours);
+				return acc + hours;
+			}
+			console.log('acc', acc);
+			return acc;
+		}, 0);
 
-	useEffect(() => {
-		if (selectedActivity) {
-			setSelectedActivity(selectedActivity);
-			setEndDate(selectedActivity.endDate);
-			setChecked(selectedActivity.isCompleted);
-		}
-	}, [selectedActivity]);
-
-	useEffect(() => {
-		renderItem(activities);
-	}, [activities]);
+	}
 
 	const renderItem = (activity) => {
-		const items = activity.map(item => {
-			return (
-				<tr className={
-					item.isCompleted ? 'disabled' : 'active'}
-					key={item.id}
-					onClick={() => handleRowClick(item)}>
-					<td>
-						<input
-							type="checkbox"
-							checked={item.isCompleted}
-							onChange={() => onCompleteActivity(item.id)}/>
-					</td>
-					<td>{item.title}</td>
-					<td>{item.description}</td>
-					<td>{item.startDate}</td>
-					<td>{item.endDate}</td>
-				</tr>
-			);
-		});
 		return (
 			<table className="activity__table">
 				<thead>
@@ -69,7 +57,22 @@ const ActivityList = (props) => {
 				</tr>
 				</thead>
 				<tbody>
-				{items}
+				{activity.map(item => (
+					<tr className={item.isCompleted ? 'disabled' : 'active'}
+						key={item.id}
+						onClick={() => onRowClick(item)}>
+						<td>
+							<input
+								type="checkbox"
+								checked={item.isCompleted}
+								onChange={() => onCompleteActivity(item.id)}/>
+						</td>
+						<td>{item.title}</td>
+						<td>{item.description}</td>
+						<td>{item.startDate}</td>
+						<td>{item.endDate}</td>
+					</tr>
+				))}
 				</tbody>
 			</table>
 		);
@@ -79,9 +82,8 @@ const ActivityList = (props) => {
 		<div className="activity">
 			<h2>Activity:</h2>
 			<div>
-				{renderItem(activities)}
+				{activities && renderItem(activities)}
 			</div>
-
 		</div>
 	);
 };

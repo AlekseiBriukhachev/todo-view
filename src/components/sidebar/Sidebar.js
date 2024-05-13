@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
 	CDBSidebar,
 	CDBSidebarContent,
@@ -9,15 +9,22 @@ import {
 } from 'cdbreact';
 import './sidebar.scss';
 import AddNewActivityModal from '../../modals/AddNewActivityModal';
+import useTodoServices from '../../services/TodoServices';
 
 const Sidebar = (props) => {
-
-	const {users, selectedUserId, onUserSelected} = props;
+	const {selectedUserId, onUserSelected} = props;
+	const [users, setUsers] = useState([]);
 	const [modalShow, setModalShow] = React.useState(false);
+
+	const {getUsers} = useTodoServices();
 
 	const handleUserChange = (event) => {
 		onUserSelected(Number(event.target.value));
 	};
+
+	useEffect(() => {
+		getUsers().then(setUsers);
+	}, []);
 
 	return (
 		<div className="sidebar">
@@ -36,31 +43,21 @@ const Sidebar = (props) => {
 
 				<CDBSidebarContent className="sidebar-content">
 					<CDBSidebarMenu>
-						<button
+						<CDBSidebarMenuItem
+							icon="plus"
 							className="sidebar__button"
 							onClick={() => setModalShow(true)}>
-							<CDBSidebarMenuItem icon="plus">Add new task</CDBSidebarMenuItem>
-						</button>
+							Add new task
+						</CDBSidebarMenuItem>
 						<AddNewActivityModal
 							show={modalShow}
 							onHide={() => setModalShow(false)}
 							selectedUserId={selectedUserId}
 						/>
-						{/*<NavLink exact to="/" activeClassName="activeClicked">*/}
 						<CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
-						{/*</NavLink>*/}
-						{/*<NavLink exact to="/tables" activeClassName="activeClicked">*/}
 						<CDBSidebarMenuItem icon="table">Tables</CDBSidebarMenuItem>
-						{/*</NavLink>*/}
-						{/*<NavLink exact to="/profile" activeClassName="activeClicked">*/}
 						<CDBSidebarMenuItem icon="user">Profile page</CDBSidebarMenuItem>
-						{/*</NavLink>*/}
-						{/*<NavLink exact to="/analytics" activeClassName="activeClicked">*/}
 						<CDBSidebarMenuItem icon="chart-line">Analytics</CDBSidebarMenuItem>
-						{/*</NavLink>*/}
-						{/*<NavLink exact to="/hero404" target="_blank" activeClassName="activeClicked">*/}
-						<CDBSidebarMenuItem icon="exclamation-circle">404 page</CDBSidebarMenuItem>
-						{/*</NavLink>*/}
 					</CDBSidebarMenu>
 				</CDBSidebarContent>
 

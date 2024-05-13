@@ -32,7 +32,7 @@ const useTodoServices = () => {
 
 	const getUserById = async (userId) => {
 		const response = await request(`http://localhost:8080/api/users/${userId}`);
-		return _transformUser(response);
+		return _transformUsers(response);
 
 	}
 
@@ -62,22 +62,6 @@ const useTodoServices = () => {
 			startDate: activity.startDate,
 			endDate: activity.endDate,
 			isCompleted: activity.isCompleted
-		};
-	};
-
-	const _transformUser = (user) => {
-		return {
-			id: user.id,
-			name: user.name,
-			email: user.email,
-			activities: user.activities.map(activity => ({
-				id: activity.id,
-				title: activity.title,
-				description: activity.description,
-				startDate: activity.startDate,
-				endDate: activity.endDate,
-				isCompleted: activity.isCompleted
-			})),
 		};
 	};
 
